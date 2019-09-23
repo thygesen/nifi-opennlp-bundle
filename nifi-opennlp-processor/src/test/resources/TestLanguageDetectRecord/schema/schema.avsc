@@ -1,0 +1,36 @@
+{
+  "name": "OpenNLPAnnotation",
+  "namespace": "nifi",
+  "type": "record",
+  "fields": [
+    { "name": "id", "type": "int" },
+    { "name": "body", "type": "string" },
+    {
+      "name": "annotations",
+      "type": {
+        "name": "annotations",
+        "type": "record",
+        "fields": [
+          {
+            "name": "language",
+            "type": {
+              "name": "language",
+              "type": "record",
+              "fields": [
+                {
+                  "name": "lang",
+                  "type": "string"
+                },
+                {
+                  "name": "confidence",
+                  "type": "double"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+

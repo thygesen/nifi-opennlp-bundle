@@ -1,0 +1,10 @@
+[ {
+  "id" : 123,
+  "body" : "This is sentence one.\nAnd this is sentence two.",
+  "annotations" : {
+    "language" : {
+      "lang" : "xxx",
+      "confidence" : 0.9
+    }
+  }
+} ]

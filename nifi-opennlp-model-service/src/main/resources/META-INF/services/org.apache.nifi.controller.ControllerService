@@ -1,0 +1,4 @@
+org.apache.opennlp.nifi.service.LanguageDetectorModelService
+org.apache.opennlp.nifi.service.NameFinderModelService
+org.apache.opennlp.nifi.service.SentenceDetectorModelService
+org.apache.opennlp.nifi.service.TokenizerModelService

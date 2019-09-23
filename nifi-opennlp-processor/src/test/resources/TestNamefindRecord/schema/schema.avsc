@@ -1,0 +1,65 @@
+{
+  "name": "OpenNLPAnnotation",
+  "namespace": "nifi",
+  "type": "record",
+  "fields": [
+    { "name": "id", "type": "int" },
+    { "name": "body", "type": "string" },
+    { "name": "annotations", "type": {
+        "name": "Annotations",
+        "type": "record",
+        "fields": [
+          {
+            "name": "tokens",
+            "type": ["null", {
+              "type": "array",
+              "items": {
+                "name": "token",
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "begin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "end",
+                    "type": "int"
+                  }
+                ]
+              }
+            }]
+          },
+          {
+            "name": "names",
+            "type": ["null", {
+              "type": "array",
+              "items": {
+                "name": "name",
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "begin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "end",
+                    "type": "int"
+                  },
+                  {
+                    "name": "type",
+                    "type": "string"
+                  },
+                  {
+                    "name": "prob",
+                    "type": "double"
+                  }
+                ]
+              }
+            }]
+          }
+        ]
+      }
+    }
+  ]
+}
+
