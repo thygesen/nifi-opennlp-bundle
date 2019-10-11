@@ -2,13 +2,13 @@ package org.apache.nifi.processors.standard;
 
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
-import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.json.JsonRecordSetWriter;
 import org.apache.nifi.json.JsonTreeReader;
 import org.apache.nifi.reporting.InitializationException;
 import org.apache.nifi.schema.access.SchemaAccessUtils;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
+import org.apache.opennlp.nifi.DummyModelServices;
 import org.apache.opennlp.nifi.service.LanguageDetectorModelService;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +25,13 @@ import static org.mockito.Matchers.anyString;
 public class TestLanguageDetectRecord {
 
   private TestRunner testRunner;
-  final Map<String, String> propertiesServiceProperties = new HashMap<>();
+  private Map<String, String> propertiesServiceProperties;
 
   @Before
   public void setup() throws InitializationException, IOException {
     // Test runner
     testRunner = TestRunners.newTestRunner(LanguageDetectRecord.class);
+    propertiesServiceProperties = new HashMap<>();
 
     // Reader
     final String inputSchemaText = new String(Files.readAllBytes(Paths.get("src/test/resources/TestLanguageDetectRecord/schema/schema.avsc")));
@@ -62,7 +63,7 @@ public class TestLanguageDetectRecord {
 
     // Add controller service
     LanguageDetector detector = Mockito.mock(LanguageDetector.class);
-    DummyLanguageDetectorModelService modelService = new DummyLanguageDetectorModelService(detector);
+    DummyModelServices.LanguageDetectorService modelService = new DummyModelServices.LanguageDetectorService(detector);
     Mockito.when(detector.predictLanguage(anyString())).thenReturn(new Language("xxx", 0.9d));
 
     testRunner.addControllerService("propertiesServiceTest", modelService, propertiesServiceProperties);
@@ -82,21 +83,5 @@ public class TestLanguageDetectRecord {
     testRunner.getFlowFilesForRelationship(LanguageDetectRecord.REL_SUCCESS).get(0).assertContentEquals(expectedOutput);
   }
 
-  static class DummyLanguageDetectorModelService extends LanguageDetectorModelService {
 
-    private LanguageDetector languageDetector;
-
-    public DummyLanguageDetectorModelService(LanguageDetector languageDetector) {
-      this.languageDetector = languageDetector;
-    }
-
-    @Override
-    public void onEnabled(ConfigurationContext context) throws InitializationException {
-    }
-
-    @Override
-    public LanguageDetector getInstance() {
-      return languageDetector;
-    }
-  }
 }
