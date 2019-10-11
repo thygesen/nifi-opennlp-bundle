@@ -11,7 +11,7 @@ import org.apache.nifi.processor.util.StandardValidators;
 import org.apache.nifi.serialization.record.MapRecord;
 import org.apache.nifi.serialization.record.RecordField;
 import org.apache.nifi.serialization.record.RecordFieldType;
-import org.apache.opennlp.nifi.service.TokenizerModelService;
+import org.apache.opennlp.nifi.service.TokenizerService;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class TokenizeRecord extends AbstractOpenNLPRecordProcessor {
           .description("OpenNLP Sentence Detector Service")
           .required(false)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-          .identifiesControllerService(TokenizerModelService.class)
+          .identifiesControllerService(TokenizerService.class)
           .build();
 
   static final PropertyDescriptor MODEL_TYPE = new PropertyDescriptor.Builder()
@@ -69,8 +69,8 @@ public class TokenizeRecord extends AbstractOpenNLPRecordProcessor {
     Tokenizer tokenizer;
     switch (context.getProperty(MODEL_TYPE).getValue()) {
       case FILE_BASED:
-        final TokenizerModelService service = context.getProperty(DETECTOR_SERVICE)
-                .asControllerService(TokenizerModelService.class);
+        final TokenizerService service = context.getProperty(DETECTOR_SERVICE)
+                .asControllerService(TokenizerService.class);
         tokenizer = service.getInstance();
         break;
       case WHITESPACE_RULE_BASED:

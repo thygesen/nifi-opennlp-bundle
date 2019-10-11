@@ -1,7 +1,6 @@
 package org.apache.nifi.processors.standard;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import opennlp.tools.util.Span;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.expression.ExpressionLanguageScope;
@@ -14,19 +13,14 @@ import org.apache.nifi.record.path.RecordPathResult;
 import org.apache.nifi.record.path.util.RecordPathCache;
 import org.apache.nifi.record.path.validation.RecordPathValidator;
 import org.apache.nifi.serialization.SimpleRecordSchema;
-import org.apache.nifi.serialization.record.ListRecordSet;
 import org.apache.nifi.serialization.record.MapRecord;
 import org.apache.nifi.serialization.record.Record;
 import org.apache.nifi.serialization.record.RecordField;
 import org.apache.nifi.serialization.record.RecordFieldType;
 import org.apache.nifi.serialization.record.RecordSchema;
-import org.apache.nifi.serialization.record.RecordSet;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -123,7 +117,5 @@ public abstract class AbstractOpenNLPRecordProcessor extends AbstractRecordProce
       return mapRecord;
     }
   };
-
-
 
 }

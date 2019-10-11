@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 
 public class TestNamefindRecord {
 

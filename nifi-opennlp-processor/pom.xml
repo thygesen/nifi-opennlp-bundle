@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>nifi-opennlp-processor</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -91,7 +92,7 @@
             <groupId>org.apache.opennlp</groupId>
             <artifactId>nifi-opennlp-model-service</artifactId>
             <version>${project.version}</version>
-            <scope>text</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -99,13 +100,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>org.apache.nifi</groupId>
-            <artifactId>nifi-record-serialization-service-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        -->
     </dependencies>
 
 </project>

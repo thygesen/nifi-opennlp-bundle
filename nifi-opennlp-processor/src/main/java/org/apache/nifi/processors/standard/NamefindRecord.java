@@ -12,7 +12,7 @@ import org.apache.nifi.serialization.record.Record;
 import org.apache.nifi.serialization.record.RecordField;
 import org.apache.nifi.serialization.record.RecordFieldType;
 import org.apache.nifi.serialization.record.RecordSchema;
-import org.apache.opennlp.nifi.service.NameFinderModelService;
+import org.apache.opennlp.nifi.service.NameFinderService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +31,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
           .description("OpenNLP Language Detector Service")
           .required(true)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-          .identifiesControllerService(NameFinderModelService.class)
+          .identifiesControllerService(NameFinderService.class)
           .build();
 
   static final PropertyDescriptor ANNOTATION_NAME = new PropertyDescriptor.Builder()
@@ -60,8 +60,8 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
   @Override
   public void annotate(ProcessContext context, MapRecord annotations, final String text) {
 
-    final NameFinderModelService service = context.getProperty(DETECTOR_SERVICE)
-            .asControllerService(NameFinderModelService.class);
+    final NameFinderService service = context.getProperty(DETECTOR_SERVICE)
+            .asControllerService(NameFinderService.class);
 
     final RecordField annotationName =
             new RecordField(context.getProperty(ANNOTATION_NAME).getValue(), RecordFieldType.MAP.getDataType());
@@ -69,7 +69,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
     final RecordField tokensField =
             new RecordField(context.getProperty(TOKENS_FIELD).getValue(), RecordFieldType.MAP.getDataType());
 
-    NameFinderME namefinder = service.getInstance();
+    NameFinderME nameFinder = service.getInstance();
 
     if (annotations.getValue(tokensField) == null) {
       // TODO:
@@ -83,7 +83,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
             .toArray(String[]::new);
 
     // name find
-    Span[] nameSpans = namefinder.find(tokens);
+    Span[] nameSpans = nameFinder.find(tokens);
 
     // convert to annotations
     if (nameSpans != null && nameSpans.length > 0) {

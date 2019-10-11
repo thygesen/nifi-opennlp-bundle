@@ -4,12 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>nifi-opennlp-model-service</module>
-        <module>nifi-opennlp-model-service-nar</module>
-        <module>nifi-opennlp-processor</module>
-        <module>nifi-opennlp-processor-nar</module>
         <module>nifi-opennlp-model-service-api</module>
         <module>nifi-opennlp-model-service-api-nar</module>
+
+        <module>nifi-opennlp-model-service</module>
+        <module>nifi-opennlp-model-service-nar</module>
+
+        <module>nifi-opennlp-processor</module>
+        <module>nifi-opennlp-processor-nar</module>
     </modules>
 
     <parent>
