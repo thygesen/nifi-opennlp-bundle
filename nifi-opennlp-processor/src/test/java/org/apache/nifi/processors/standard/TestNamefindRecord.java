@@ -1,17 +1,14 @@
 package org.apache.nifi.processors.standard;
 
-import opennlp.tools.langdetect.Language;
-import opennlp.tools.langdetect.LanguageDetector;
 import opennlp.tools.namefind.NameFinderME;
 import opennlp.tools.util.Span;
-import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.json.JsonRecordSetWriter;
 import org.apache.nifi.json.JsonTreeReader;
 import org.apache.nifi.reporting.InitializationException;
 import org.apache.nifi.schema.access.SchemaAccessUtils;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
-import org.apache.opennlp.nifi.service.LanguageDetectorModelService;
+import org.apache.opennlp.nifi.DummyModelServices;
 import org.apache.opennlp.nifi.service.NameFinderModelService;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +62,7 @@ public class TestNamefindRecord {
 
     // Add controller service
     NameFinderME nameFinder = Mockito.mock(NameFinderME.class);
-    DummyNameFinderModelService modelService = new DummyNameFinderModelService(nameFinder);
+    DummyModelServices.NameFinderService modelService = new DummyModelServices.NameFinderService(nameFinder);
     Mockito.when(nameFinder.find(any(String[].class))).thenReturn(new Span[] {
             new Span(0, 2, "Person", 0.9985619989883148),
             new Span(10, 11, "Person", 0.9839235561554898)});
@@ -87,21 +84,4 @@ public class TestNamefindRecord {
     testRunner.getFlowFilesForRelationship(NamefindRecord.REL_SUCCESS).get(0).assertContentEquals(expectedOutput);
   }
 
-  static class DummyNameFinderModelService extends NameFinderModelService {
-
-    private NameFinderME nameFinder;
-
-    public DummyNameFinderModelService(NameFinderME nameFinder) {
-      this.nameFinder = nameFinder;
-    }
-
-    @Override
-    public void onEnabled(ConfigurationContext context) throws InitializationException {
-    }
-
-    @Override
-    public NameFinderME getInstance() {
-      return nameFinder;
-    }
-  }
 }

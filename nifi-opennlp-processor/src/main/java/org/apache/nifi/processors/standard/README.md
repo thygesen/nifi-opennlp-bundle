@@ -1,0 +1,3 @@
+Classes were placed in this package because the Record_Reader and Record_Writer properties of AbstractRecordProcessor class are private package scope, and cannot be tested unless I can access these.
+Don't understand why they are not public...
+ 

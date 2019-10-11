@@ -1,8 +1,5 @@
 package org.apache.nifi.processors.standard;
 
-import opennlp.tools.tokenize.SimpleTokenizer;
-import opennlp.tools.tokenize.Tokenizer;
-import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.json.JsonRecordSetWriter;
 import org.apache.nifi.json.JsonTreeReader;
 import org.apache.nifi.reporting.InitializationException;
@@ -10,6 +7,7 @@ import org.apache.nifi.schema.access.SchemaAccessUtils;
 import org.apache.nifi.util.MockFlowFile;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
+import org.apache.opennlp.nifi.DummyModelServices;
 import org.apache.opennlp.nifi.service.TokenizerModelService;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +59,7 @@ public class TestTokenizeRecord {
   public void testProcessorModelBased() throws InitializationException, IOException {
 
     // Add controller service
-    DummyTokenizerModelService modelService = new DummyTokenizerModelService();
+    DummyModelServices.TokenizerService modelService = new DummyModelServices.TokenizerService();
     testRunner.addControllerService("propertiesServiceTest", modelService, propertiesServiceProperties);
     testRunner.enableControllerService(modelService);
     testRunner.setProperty(TokenizeRecord.DETECTOR_SERVICE, "propertiesServiceTest");
@@ -114,18 +112,6 @@ public class TestTokenizeRecord {
     final String expectedOutput = new String(Files.readAllBytes(
             Paths.get("src/test/resources/TestTokenizeRecord/output/simple.json")));
     testRunner.getFlowFilesForRelationship(TokenizeRecord.REL_SUCCESS).get(0).assertContentEquals(expectedOutput);
-
-  }
-
-  static class DummyTokenizerModelService extends TokenizerModelService {
-    @Override
-    public void onEnabled(ConfigurationContext context) throws InitializationException {
-    }
-
-    @Override
-    public Tokenizer getInstance() {
-      return SimpleTokenizer.INSTANCE;
-    }
 
   }
 

@@ -1,8 +1,5 @@
 package org.apache.nifi.processors.standard;
 
-import opennlp.tools.sentdetect.NewlineSentenceDetector;
-import opennlp.tools.sentdetect.SentenceDetector;
-import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.json.JsonRecordSetWriter;
 import org.apache.nifi.json.JsonTreeReader;
 import org.apache.nifi.reporting.InitializationException;
@@ -10,6 +7,7 @@ import org.apache.nifi.schema.access.SchemaAccessUtils;
 import org.apache.nifi.util.MockFlowFile;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
+import org.apache.opennlp.nifi.DummyModelServices;
 import org.apache.opennlp.nifi.service.SentenceDetectorModelService;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +59,7 @@ public class TestSentenceDetectRecord {
   public void testProcessorModelBased() throws InitializationException, IOException {
 
     // Add controller service
-    DummySentenceDetectorModelService modelService = new DummySentenceDetectorModelService();
+    DummyModelServices.SentenceDetectorService modelService = new DummyModelServices.SentenceDetectorService();
 
     testRunner.addControllerService("propertiesServiceTest", modelService, propertiesServiceProperties);
     testRunner.enableControllerService(modelService);
@@ -99,16 +97,7 @@ public class TestSentenceDetectRecord {
 
   }
 
-  static class DummySentenceDetectorModelService extends SentenceDetectorModelService {
-    @Override
-    public void onEnabled(ConfigurationContext context) throws InitializationException {
-    }
 
-    @Override
-    public SentenceDetector getInstance() {
-      return new NewlineSentenceDetector();
-    }
-  }
 
 
 }
