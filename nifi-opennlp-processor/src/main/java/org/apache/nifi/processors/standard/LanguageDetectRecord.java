@@ -20,6 +20,13 @@ package org.apache.nifi.processors.standard;
 import com.google.common.collect.Lists;
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
+import org.apache.nifi.annotation.behavior.EventDriven;
+import org.apache.nifi.annotation.behavior.InputRequirement;
+import org.apache.nifi.annotation.behavior.SideEffectFree;
+import org.apache.nifi.annotation.behavior.SupportsBatching;
+import org.apache.nifi.annotation.documentation.CapabilityDescription;
+import org.apache.nifi.annotation.documentation.SeeAlso;
+import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.processor.ProcessContext;
 import org.apache.nifi.processor.util.StandardValidators;
@@ -34,6 +41,16 @@ import org.apache.opennlp.nifi.service.LanguageDetectorService;
 import java.util.HashMap;
 import java.util.List;
 
+@EventDriven
+@SideEffectFree
+@SupportsBatching
+@InputRequirement(InputRequirement.Requirement.INPUT_REQUIRED)
+@Tags({"record", "schema", "json", "csv", "avro", "nlp", "opennlp", "language", "detect", "language detection"})
+@CapabilityDescription("Updates the content by adding language and confidence of the text " +
+        "identified by the TEXT_RECORD_PATH property. "+
+        "The language and confidence is written written to the dictionary identified by ANNOTATION_RECORD_PATH property with key " +
+        "identified by ANNOTATION_NAME property.")
+@SeeAlso({TokenizeRecord.class, NamefindRecord.class, SentenceDetectRecord.class})
 public class LanguageDetectRecord extends AbstractOpenNLPRecordProcessor {
 
   static final RecordField LANG = new RecordField("lang", RecordFieldType.STRING.getDataType());

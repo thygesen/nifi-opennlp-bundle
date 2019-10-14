@@ -48,7 +48,7 @@ public abstract class AbstractOpenNLPRecordProcessor extends AbstractRecordProce
   static final RecordField SPAN_END = new RecordField("end", RecordFieldType.INT.getDataType());
   static final RecordSchema SPAN_SCHEMA = new SimpleRecordSchema(Lists.newArrayList(SPAN_BEGIN, SPAN_END));
 
-  static final PropertyDescriptor TEXT_RECORD_PATH = new PropertyDescriptor.Builder()
+  static final PropertyDescriptor TEXT_RECORD_PATH_PD = new PropertyDescriptor.Builder()
           .name("text-record-path")
           .description("Path to a text.")
           .defaultValue(null)
@@ -58,7 +58,7 @@ public abstract class AbstractOpenNLPRecordProcessor extends AbstractRecordProce
           .addValidator(new RecordPathValidator())
           .build();
 
-  static final PropertyDescriptor ANNOTATION_RECORD_PATH = new PropertyDescriptor.Builder()
+  static final PropertyDescriptor ANNOTATION_RECORD_PATH_PD = new PropertyDescriptor.Builder()
           .name("annotation-record-path")
           .description("A RecordPath to the field that will be updated with Annotations.")
           .defaultValue(null)
@@ -73,15 +73,15 @@ public abstract class AbstractOpenNLPRecordProcessor extends AbstractRecordProce
   @Override
   protected List<PropertyDescriptor> getSupportedPropertyDescriptors() {
     List<PropertyDescriptor> propertyDescriptors = super.getSupportedPropertyDescriptors();
-    propertyDescriptors.add(TEXT_RECORD_PATH);
-    propertyDescriptors.add(ANNOTATION_RECORD_PATH);
+    propertyDescriptors.add(TEXT_RECORD_PATH_PD);
+    propertyDescriptors.add(ANNOTATION_RECORD_PATH_PD);
     return propertyDescriptors;
   }
 
   @Override
   protected Record process(Record record, final FlowFile flowFile, final ProcessContext context) {
 
-    String inputRecordPathString = context.getProperty(TEXT_RECORD_PATH)
+    String inputRecordPathString = context.getProperty(TEXT_RECORD_PATH_PD)
             .evaluateAttributeExpressions(flowFile).getValue();
 
     final RecordPath inputRecordPath = recordPathCache.getCompiled(inputRecordPathString);
@@ -97,7 +97,7 @@ public abstract class AbstractOpenNLPRecordProcessor extends AbstractRecordProce
       throw new RuntimeException("There should not be more than one text field for nlp processing");
     }
 
-    String annRecordPathString = context.getProperty(ANNOTATION_RECORD_PATH)
+    String annRecordPathString = context.getProperty(ANNOTATION_RECORD_PATH_PD)
             .evaluateAttributeExpressions(flowFile).getValue();
 
     final RecordPath annRecordPath = recordPathCache.getCompiled(annRecordPathString);

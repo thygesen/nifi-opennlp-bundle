@@ -13,4 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 org.apache.nifi.processors.standard.LanguageDetectRecord
+org.apache.nifi.processors.standard.NamefindRecord
 org.apache.nifi.processors.standard.SentenceDetectRecord
+org.apache.nifi.processors.standard.TokenizeRecord
+org.apache.opennlp.nifi.LanguageDetectProcessor

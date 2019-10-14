@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.apache.nifi.processors.standard;
 
 import org.apache.nifi.json.JsonRecordSetWriter;
@@ -50,8 +67,8 @@ public class TestTokenizeRecord {
     // Set Properties
     testRunner.setProperty(TokenizeRecord.RECORD_READER, "reader");
     testRunner.setProperty(TokenizeRecord.RECORD_WRITER, "writer");
-    testRunner.setProperty(TokenizeRecord.TEXT_RECORD_PATH, "/body");
-    testRunner.setProperty(TokenizeRecord.ANNOTATION_RECORD_PATH, "/annotations");
+    testRunner.setProperty(TokenizeRecord.TEXT_RECORD_PATH_PD, "/body");
+    testRunner.setProperty(TokenizeRecord.ANNOTATION_RECORD_PATH_PD, "/annotations");
 
   }
 
@@ -62,8 +79,8 @@ public class TestTokenizeRecord {
     DummyModelServices.TokenizerService modelService = new DummyModelServices.TokenizerService();
     testRunner.addControllerService("propertiesServiceTest", modelService, propertiesServiceProperties);
     testRunner.enableControllerService(modelService);
-    testRunner.setProperty(TokenizeRecord.DETECTOR_SERVICE, "propertiesServiceTest");
-    testRunner.setProperty(TokenizeRecord.MODEL_TYPE, TokenizeRecord.FILE_BASED);
+    testRunner.setProperty(TokenizeRecord.DETECTOR_SERVICE_PD, "propertiesServiceTest");
+    testRunner.setProperty(TokenizeRecord.MODEL_TYPE_PD, TokenizeRecord.MODEL_BASED);
 
     propertiesServiceProperties.put(TokenizerModelService.MODEL_PATH.getName(),
             "/src/test/resources/dummy.bin");
@@ -83,7 +100,7 @@ public class TestTokenizeRecord {
   public void testProcessorWhitespaceRuleBased() throws IOException {
 
     // Whitespace based
-    testRunner.setProperty(TokenizeRecord.MODEL_TYPE, TokenizeRecord.WHITESPACE_RULE_BASED);
+    testRunner.setProperty(TokenizeRecord.MODEL_TYPE_PD, TokenizeRecord.WHITESPACE_RULE_BASED);
 
     testRunner.enqueue(Paths.get("src/test/resources/TestTokenizeRecord/input/simple.json"));
     testRunner.run();
@@ -101,7 +118,7 @@ public class TestTokenizeRecord {
   public void testProcessorSimpleRuleBased() throws IOException {
 
     // New Line Base
-    testRunner.setProperty(TokenizeRecord.MODEL_TYPE, TokenizeRecord.SIMPLE_RULE_BASED);
+    testRunner.setProperty(TokenizeRecord.MODEL_TYPE_PD, TokenizeRecord.SIMPLE_RULE_BASED);
 
     testRunner.enqueue(Paths.get("src/test/resources/TestTokenizeRecord/input/simple.json"));
     testRunner.run();

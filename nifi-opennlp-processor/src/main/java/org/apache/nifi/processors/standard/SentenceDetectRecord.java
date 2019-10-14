@@ -20,6 +20,12 @@ package org.apache.nifi.processors.standard;
 import opennlp.tools.sentdetect.NewlineSentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.util.Span;
+import org.apache.nifi.annotation.behavior.EventDriven;
+import org.apache.nifi.annotation.behavior.InputRequirement;
+import org.apache.nifi.annotation.behavior.SideEffectFree;
+import org.apache.nifi.annotation.behavior.SupportsBatching;
+import org.apache.nifi.annotation.documentation.CapabilityDescription;
+import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.AllowableValue;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.processor.ProcessContext;
@@ -31,6 +37,15 @@ import org.apache.opennlp.nifi.service.SentenceDetectorService;
 
 import java.util.List;
 
+@EventDriven
+@SideEffectFree
+@SupportsBatching
+@InputRequirement(InputRequirement.Requirement.INPUT_REQUIRED)
+@Tags({"record", "schema", "json", "csv", "avro", "nlp", "opennlp", "namefinder", "detect"})
+@CapabilityDescription("Updates the content by adding sentence stand off annotations for the text " +
+        "identified by the TEXT_RECORD_PATH property. " +
+        "The sentences are written to the dictionary identified by ANNOTATION_RECORD_PATH property with key " +
+        "identified by ANNOTATION_NAME property.")
 public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
 
   static final String NEWLINE_BASED = "NEWLINE";
@@ -40,7 +55,7 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
           new AllowableValue(NEWLINE_BASED, "New Line", "Use OpenNLP NewlineSentenceDetector."),
           new AllowableValue(FILE_BASED, "Model", "Use a model loaded from filesystem.") };
 
-  static final PropertyDescriptor DETECTOR_SERVICE = new PropertyDescriptor.Builder()
+  static final PropertyDescriptor DETECTOR_SERVICE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-sentence-detector-service")
           .description("OpenNLP Sentence Detector Service")
           .required(false)
@@ -48,7 +63,7 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
           .identifiesControllerService(SentenceDetectorService.class)
           .build();
 
-  static final PropertyDescriptor MODEL_TYPE = new PropertyDescriptor.Builder()
+  static final PropertyDescriptor MODEL_TYPE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-sentence-model-type")
           .description("Model base sentence detector or simple newline sentence detector.")
           .required(true)
@@ -57,7 +72,7 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
           .build();
 
-  static final PropertyDescriptor ANNOTATION_NAME = new PropertyDescriptor.Builder()
+  static final PropertyDescriptor ANNOTATION_NAME_PD = new PropertyDescriptor.Builder()
           .name("annotation-name")
           .description("Name of sentences field in the annotations.")
           .defaultValue("sentences")
@@ -67,9 +82,9 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
   @Override
   protected List<PropertyDescriptor> getSupportedPropertyDescriptors() {
     List<PropertyDescriptor> propertyDescriptors = super.getSupportedPropertyDescriptors();
-    propertyDescriptors.add(DETECTOR_SERVICE);
-    propertyDescriptors.add(MODEL_TYPE);
-    propertyDescriptors.add(ANNOTATION_NAME);
+    propertyDescriptors.add(DETECTOR_SERVICE_PD);
+    propertyDescriptors.add(MODEL_TYPE_PD);
+    propertyDescriptors.add(ANNOTATION_NAME_PD);
     return propertyDescriptors;
   }
 
@@ -77,11 +92,11 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
   public void annotate(ProcessContext context, MapRecord annotations, String text) {
 
     final RecordField annotationName =
-            new RecordField(context.getProperty(ANNOTATION_NAME).getValue(), RecordFieldType.MAP.getDataType());
+            new RecordField(context.getProperty(ANNOTATION_NAME_PD).getValue(), RecordFieldType.MAP.getDataType());
 
     SentenceDetector detector;
-    if (FILE_BASED.equals(context.getProperty(MODEL_TYPE).getValue())) {
-      final SentenceDetectorService service = context.getProperty(DETECTOR_SERVICE)
+    if (FILE_BASED.equals(context.getProperty(MODEL_TYPE_PD).getValue())) {
+      final SentenceDetectorService service = context.getProperty(DETECTOR_SERVICE_PD)
               .asControllerService(SentenceDetectorService.class);
       detector = service.getInstance();
     } else {
