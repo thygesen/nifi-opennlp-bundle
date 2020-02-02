@@ -78,4 +78,11 @@ public class TestLanguageDetectProcessor {
     successFiles.get(0).assertContentEquals(text);
   }
 
+  @Test(expected = AssertionError.class)
+  public void testInvalidCharset() {
+    testRunner.setProperty(LanguageDetectProcessor.TEXT_ENCODING_PD, "MyCharSet");
+    testRunner.enqueue(new byte[] {0x12, 0x14, 0x16, 0x18, 0x20});
+    testRunner.run();
+  }
+
 }

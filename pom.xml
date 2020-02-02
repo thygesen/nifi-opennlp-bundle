@@ -39,7 +39,22 @@
                 <artifactId>opennlp-tools</artifactId>
                 <version>${opennlp.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-api</artifactId>
+                <version>${nifi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>martiansoftware</id>
+            <name>martiansoftware</name>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <url>http://mvn.martiansoftware.com/</url>
+        </repository>
+    </repositories>
 </project>

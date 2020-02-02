@@ -55,7 +55,7 @@ public class TokenizeRecord extends AbstractOpenNLPRecordProcessor {
   static final String SIMPLE_RULE_BASED = "SIMPLE";
   static final String MODEL_BASED = "MODEL";
 
-  static final AllowableValue[] ALLOWABLE_VALUES = new AllowableValue[] {
+  static final AllowableValue[] ALLOWABLE_MODEL_VALUES = new AllowableValue[] {
     new AllowableValue(WHITESPACE_RULE_BASED, "Whitespace", "Use OpenNLP WhitespaceTokenizer."),
     new AllowableValue(SIMPLE_RULE_BASED, "Simple", "Use OpenNLP SimpleTokenizer."),
     new AllowableValue(MODEL_BASED, "Model", "Use a model loaded from filesystem.") };
@@ -65,6 +65,7 @@ public class TokenizeRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor DETECTOR_SERVICE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-sentence-detector-service")
+          .displayName("Language Detector Service")
           .description("OpenNLP Sentence Detector Service")
           .required(false)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -73,15 +74,17 @@ public class TokenizeRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor MODEL_TYPE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-sentence-model-type")
+          .displayName("Model Type")
           .description("Model base sentence detector or simple newline sentence detector.")
           .required(true)
-          .allowableValues(ALLOWABLE_VALUES)
+          .allowableValues(ALLOWABLE_MODEL_VALUES)
           .defaultValue(SIMPLE_RULE_BASED)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
           .build();
 
   static final PropertyDescriptor ANNOTATION_NAME_PD = new PropertyDescriptor.Builder()
           .name("annotation-name")
+          .displayName("Token Annotations Field")
           .description("Name of tokens field in the annotations.")
           .defaultValue("tokens")
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)

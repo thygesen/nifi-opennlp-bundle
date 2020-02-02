@@ -74,6 +74,7 @@ public class LanguageDetectProcessor extends AbstractProcessor {
 
   static final PropertyDescriptor DETECTOR_SERVICE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-language-detector-service")
+          .displayName("Language Detector Service")
           .description("OpenNLP Language Detector Service")
           .required(true)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -82,9 +83,10 @@ public class LanguageDetectProcessor extends AbstractProcessor {
 
   static final PropertyDescriptor TEXT_ENCODING_PD = new PropertyDescriptor.Builder()
           .name("text-encoding")
-          .description("Text encoding")
+          .displayName("Text Encoding")
+          .description("Text encoding of the text to analyse.")
           .defaultValue(StandardCharsets.UTF_8.displayName())
-          .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+          .addValidator(StandardValidators.CHARACTER_SET_VALIDATOR)
           .build();
 
   static {
@@ -114,7 +116,7 @@ public class LanguageDetectProcessor extends AbstractProcessor {
 
     FlowFile flowFile = session.get();
     if (flowFile == null) {
-      flowFile = session.create();
+      return;
     }
 
     AtomicBoolean error = new AtomicBoolean();

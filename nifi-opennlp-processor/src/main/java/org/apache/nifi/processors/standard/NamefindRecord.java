@@ -63,6 +63,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor DETECTOR_SERVICE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-language-detector-service")
+          .displayName("Language Detector Service")
           .description("OpenNLP Language Detector Service")
           .required(true)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -71,6 +72,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor ANNOTATION_NAME_PD = new PropertyDescriptor.Builder()
           .name("annotation-name")
+          .displayName("Name Annotation Field")
           .description("Name of the names field in the annotations.")
           .defaultValue("names")
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -78,6 +80,7 @@ public class NamefindRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor TOKENS_FIELD_PD = new PropertyDescriptor.Builder()
           .name("tokens-field")
+          .displayName("Token Annotations Field")
           .description("Name of annotation field that holds the tokens.")
           .defaultValue("tokens")
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)

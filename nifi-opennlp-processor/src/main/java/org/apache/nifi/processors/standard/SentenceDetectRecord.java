@@ -57,6 +57,7 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor DETECTOR_SERVICE_PD = new PropertyDescriptor.Builder()
           .name("opennlp-sentence-detector-service")
+          .displayName("Language Detector Service")
           .description("OpenNLP Sentence Detector Service")
           .required(false)
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -74,6 +75,7 @@ public class SentenceDetectRecord extends AbstractOpenNLPRecordProcessor {
 
   static final PropertyDescriptor ANNOTATION_NAME_PD = new PropertyDescriptor.Builder()
           .name("annotation-name")
+          .displayName("Sentence Annotation Field")
           .description("Name of sentences field in the annotations.")
           .defaultValue("sentences")
           .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
