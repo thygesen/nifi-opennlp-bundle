@@ -4,25 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>nifi-opennlp-model-service-api</module>
-        <module>nifi-opennlp-model-service-api-nar</module>
+        <module>nifi-opennlp-services-api</module>
+        <module>nifi-opennlp-services-api-nar</module>
 
-        <module>nifi-opennlp-model-service</module>
-        <module>nifi-opennlp-model-service-nar</module>
+        <module>nifi-opennlp-services</module>
+        <module>nifi-opennlp-services-nar</module>
 
-        <module>nifi-opennlp-processor</module>
-        <module>nifi-opennlp-processor-nar</module>
+        <module>nifi-opennlp-processors</module>
+        <module>nifi-opennlp-nar</module>
     </modules>
 
     <parent>
         <groupId>org.apache.nifi</groupId>
         <artifactId>nifi-nar-bundles</artifactId>
-        <version>1.9.2</version>
+        <version>1.11.0</version>
     </parent>
 
     <properties>
-        <nifi.version>1.9.2</nifi.version>
-        <opennlp.version>1.9.1</opennlp.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <nifi.version>1.11.0</nifi.version>
+        <opennlp.version>1.9.2</opennlp.version>
     </properties>
 
     <groupId>org.apache.opennlp</groupId>
@@ -35,26 +37,14 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.opennlp</groupId>
-                <artifactId>opennlp-tools</artifactId>
-                <version>${opennlp.version}</version>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-opennlp-processors</artifactId>
             </dependency>
             <dependency>
                 <groupId>org.apache.nifi</groupId>
-                <artifactId>nifi-api</artifactId>
-                <version>${nifi.version}</version>
+                <artifactId>nifi-services</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>martiansoftware</id>
-            <name>martiansoftware</name>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://mvn.martiansoftware.com/</url>
-        </repository>
-    </repositories>
 </project>
